@@ -34,7 +34,10 @@ public class BracketController : ControllerBase
         {
             return Ok(bracket);
         }
-        return NotFound();
+        return Problem(
+            title: "Not found",
+            detail: "Bracket does not exist",
+            statusCode: StatusCodes.Status404NotFound);
     }
 
     [HttpPost]
@@ -72,7 +75,10 @@ public class BracketController : ControllerBase
             return Ok(bracket);
         }
 
-        return NotFound();
+        return Problem(
+            title: "Not found",
+            detail: "Bracket does not exist",
+            statusCode: StatusCodes.Status404NotFound);
     }
 
     [HttpDelete("{guid}")]
@@ -86,7 +92,10 @@ public class BracketController : ControllerBase
             return NoContent();
         }
 
-        return NotFound();
+        return Problem(
+            title: "Not found", 
+            detail: "Bracket does not exist", 
+            statusCode: StatusCodes.Status404NotFound);
     }
 
 }

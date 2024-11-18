@@ -14,6 +14,7 @@ var connectionString = postgresSettings?.ConnectionString;
 
 builder.Services.AddDbContext<AlmondDbContext>(opt => opt.UseNpgsql(connectionString));
 builder.Services.AddAuthorization();
+builder.Services.AddProblemDetails();
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<AlmondDbContext>();
 

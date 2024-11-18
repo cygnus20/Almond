@@ -1,5 +1,6 @@
 using Almond.API.Core;
 using Almond.API.Data;
+using Almond.API.Handlers;
 using Almond.API.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ var connectionString = postgresSettings?.ConnectionString;
 
 builder.Services.AddDbContext<AlmondDbContext>(opt => opt.UseNpgsql(connectionString));
 builder.Services.AddAuthorization();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<AlmondDbContext>();
@@ -29,6 +31,7 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
 app.MapIdentityApi<IdentityUser>();
 
 // Configure the HTTP request pipeline.

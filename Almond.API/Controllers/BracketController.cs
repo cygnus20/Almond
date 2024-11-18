@@ -1,7 +1,6 @@
 ﻿using Almond.API.Core;
 using Almond.API.Data;
 using Almond.API.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

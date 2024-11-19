@@ -1,19 +1,24 @@
 ﻿using Almond.API.Core;
 using Almond.API.Data;
 using Almond.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Almond.API.Controllers;
+
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class BracketController : ControllerBase
 {
     private readonly AlmondDbContext _context;
+    private readonly IGetUserClaims _userClaims;
 
-    public BracketController(AlmondDbContext context)
+    public BracketController(AlmondDbContext context, IGetUserClaims userClaims)
     {
         _context = context;
+        _userClaims = userClaims;
     }
     public static List<Bracket> Brackets = new List<Bracket>();
 
@@ -45,6 +50,7 @@ public class BracketController : ControllerBase
         Bracket bracket = new Bracket 
         { 
             Guid = Guid.NewGuid(),
+            UserId = _userClaims.UserId,
             Participants = Enumerable.Range(0, names.Count)
             .Select(p => new Participant { Guid = Guid.NewGuid(), Name = names[p] }).ToList()
         };

@@ -3,6 +3,7 @@ using Almond.API.Data;
 using Almond.API.Handlers;
 using Almond.API.Settings;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -46,5 +47,17 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapPost("/logout", async (SignInManager<IdentityUser> signInManger,
+    [FromBody] object empty) =>
+{
+    if (empty != null)
+    {
+        await signInManger.SignOutAsync();
+        return Results.Ok();
+    }
+
+    return Results.Unauthorized();
+}).RequireAuthorization();
 
 app.Run();

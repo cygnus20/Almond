@@ -1,5 +1,6 @@
 ﻿using Almond.API.Core;
 using Almond.API.Data;
+using Almond.API.DTOs;
 using Almond.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,14 +26,14 @@ public class BracketController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var brackets = await _context.Brackets.AsNoTracking().ToListAsync();
+        var brackets = await _context.Brackets.AsNoTracking().Select(b => b.ToDTO()).ToListAsync();
         return Ok(brackets);
     }
 
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
     {
-        var bracket = _context.Brackets.AsNoTracking().SingleOrDefault(c => c.Guid == guid);
+        var bracket = _context.Brackets.AsNoTracking().SingleOrDefault(c => c.Guid == guid)?.ToDTO();
 
         if (bracket != null) 
         {
@@ -63,7 +64,7 @@ public class BracketController : ControllerBase
     }
 
     [HttpPut("{guid}")]
-    public async Task<IActionResult> Put(Guid guid, [FromBody] Round rounds) 
+    public async Task<IActionResult> Put(Guid guid, [FromBody] RoundDTO round) 
     {
         var bracket = _context.Brackets.SingleOrDefault(c => c.Guid == guid);
         //Round currentRound = new();
@@ -73,9 +74,10 @@ public class BracketController : ControllerBase
             
             var currentRound = bracket.Rounds.First(r => r.Current);
             int index = bracket.Rounds.IndexOf(currentRound);
-            bracket.Rounds[index] = rounds;
+            bracket.Rounds[index].Matches = round.Matches;
             bracket.Update();
 
+            _context.Update(bracket);
             await _context.SaveChangesAsync();
             return Ok(bracket);
         }

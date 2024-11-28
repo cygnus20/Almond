@@ -63,6 +63,7 @@ app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    options.DefaultModelsExpandDepth(-1);
     options.SupportedSubmitMethods();
     options.RoutePrefix = string.Empty;
 });

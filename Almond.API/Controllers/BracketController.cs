@@ -21,11 +21,13 @@ public class BracketController : ControllerBase
         _context = context;
         _userClaims = userClaims;
     }
+
     public static List<Bracket> Brackets = new List<Bracket>();
     /// <summary>
     /// Get bracktets
     /// </summary>
     /// <returns>A list of bracktets</returns>
+    /// <response code="401">Authorization required</response>
     [HttpGet]
     public async Task<IActionResult> Get()
     {
@@ -42,6 +44,7 @@ public class BracketController : ControllerBase
     ///     GET /api/bracket/3fa85f64-5717-4562-b3fc-2c963f66afa4
     /// </remarks>
     /// <response code="200">Bracket has been returned successfully</response>
+    /// <response code="401">Authorization required</response>
     /// <response code="404">Bracket does not exist</response>
     [HttpGet("{guid}")]
     public IActionResult Get(Guid guid)
@@ -71,6 +74,7 @@ public class BracketController : ControllerBase
     ///     ]
     /// </remarks>
     /// <response code="201">Returns the newly created bracket</response>
+    /// <response code="401">Authorization required</response>
     [HttpPost]
     public async Task<IActionResult> Post(List<string> names)
     {
@@ -117,6 +121,7 @@ public class BracketController : ControllerBase
     ///     }
     /// </remarks>
     /// <response code="200">Bracket has been updated successfully</response>
+    /// <response code="401">Authorization required</response>
     /// <response code="404">Bracket does not exist</response>
     [HttpPut("{guid}")]
     public async Task<IActionResult> Put(Guid guid, [FromBody] RoundDTO round) 
@@ -153,6 +158,7 @@ public class BracketController : ControllerBase
     ///     DELETE /api/bracket/3fa85f64-5717-4562-b3fc-2c963f66afa4
     /// </remarks>
     /// <response code="200">Bracket has been deleted successfully</response>
+    /// <response code="401">Authorization required</response>
     /// <response code="404">Bracket does not exist</response>
     [HttpDelete("{guid}")]
     public async Task<IActionResult> Delete(Guid guid)
